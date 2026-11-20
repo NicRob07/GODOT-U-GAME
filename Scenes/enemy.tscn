@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://i741j7ey7yfe"]
+
+[ext_resource type="Script" uid="uid://dhhkkdobei1xi" path="res://Scripts/Enemy/enemy.gd" id="1_ghaa6"]
+[ext_resource type="PackedScene" uid="uid://bh25qnabtvm6y" path="res://Scenes/state_machine.tscn" id="2_1dp5w"]
+[ext_resource type="Texture2D" uid="uid://ckm3cad4il4ou" path="res://Assets/ENEMIGO.png" id="2_auwsv"]
+[ext_resource type="Script" uid="uid://b1u7cpaofqchm" path="res://Scripts/Enemy/state_patrol.gd" id="3_auwsv"]
+[ext_resource type="Script" uid="uid://de71c2nxqgh5e" path="res://Scripts/Enemy/state_chase.gd" id="4_8uf12"]
+[ext_resource type="Script" uid="uid://bkybpne1c4rwr" path="res://Scripts/Enemy/state_investigate.gd" id="5_po0sg"]
+[ext_resource type="Script" uid="uid://jx4alcop7tq" path="res://Scripts/Enemy/state_search.gd" id="6_haro7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8uf12"]
+size = Vector2(16, 15)
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1399832845]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_ghaa6")
+wall_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=82224095]
+texture = ExtResource("2_auwsv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1023905798]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_8uf12")
+
+[node name="Pivot" type="Node2D" parent="." unique_id=931859393]
+
+[node name="ConeVisual" type="Polygon2D" parent="Pivot" unique_id=561971486]
+
+[node name="VisionArea" type="Area2D" parent="Pivot" unique_id=362993787]
+collision_layer = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Pivot/VisionArea" unique_id=327414361]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=865959756]
+
+[node name="StateMachine" parent="." unique_id=1938008002 node_paths=PackedStringArray("ControlledNode", "DefaultState") instance=ExtResource("2_1dp5w")]
+ControlledNode = NodePath("..")
+DefaultState = NodePath("StatePatrol")
+
+[node name="StatePatrol" type="Node" parent="StateMachine" unique_id=813194501]
+script = ExtResource("3_auwsv")
+
+[node name="StateChase" type="Node" parent="StateMachine" unique_id=506758489]
+script = ExtResource("4_8uf12")
+
+[node name="StateInvestigate" type="Node" parent="StateMachine" unique_id=2002956657]
+script = ExtResource("5_po0sg")
+
+[node name="StateSearch" type="Node" parent="StateMachine" unique_id=2135963123]
+script = ExtResource("6_haro7")

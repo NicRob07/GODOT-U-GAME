@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cnukn8dlinvij"]
+
+[ext_resource type="Script" uid="uid://u4s1rf4okd5u" path="res://Scripts/SecurityCamera/security_camera.gd" id="1_w5ecb"]
+[ext_resource type="Texture2D" uid="uid://4twheqp0mxps" path="res://Assets/CAMARA.png" id="2_lnlkp"]
+[ext_resource type="PackedScene" uid="uid://bh25qnabtvm6y" path="res://Scenes/state_machine.tscn" id="2_s82g6"]
+[ext_resource type="Script" uid="uid://bupiv0waac5nt" path="res://Scripts/SecurityCamera/state_idle.gd" id="3_s82g6"]
+[ext_resource type="Script" uid="uid://3sdcyixcr38r" path="res://Scripts/SecurityCamera/state_alert.gd" id="4_krab8"]
+
+[node name="SecurityCamera" type="Node2D" unique_id=347354318]
+script = ExtResource("1_w5ecb")
+vision_range = 100.0
+color_idle = Color(1, 0.49411765, 1, 0.34901962)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=404970239]
+texture = ExtResource("2_lnlkp")
+
+[node name="ConeVisual" type="Polygon2D" parent="." unique_id=1554498543]
+
+[node name="VisionArea" type="Area2D" parent="." unique_id=656288778]
+collision_layer = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionArea" unique_id=908948966]
+
+[node name="StateMachine" parent="." unique_id=1938008002 node_paths=PackedStringArray("ControlledNode", "DefaultState") instance=ExtResource("2_s82g6")]
+ControlledNode = NodePath("..")
+DefaultState = NodePath("StateIdle")
+
+[node name="StateIdle" type="Node" parent="StateMachine" unique_id=516797074]
+script = ExtResource("3_s82g6")
+
+[node name="StateAlert" type="Node" parent="StateMachine" unique_id=344378294]
+script = ExtResource("4_krab8")

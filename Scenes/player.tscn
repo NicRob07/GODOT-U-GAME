@@ -1,14 +1,38 @@
 [gd_scene format=3 uid="uid://bp3kj2ccba1q"]
 
-[ext_resource type="Texture2D" uid="uid://ccooqi80fj2at" path="res://icon.svg" id="1_v0iea"]
+[ext_resource type="Script" uid="uid://dk5hohst73k00" path="res://Scripts/Player/player.gd" id="1_6t5aa"]
+[ext_resource type="PackedScene" uid="uid://bh25qnabtvm6y" path="res://Scenes/state_machine.tscn" id="1_cvnsp"]
+[ext_resource type="Script" uid="uid://yakylgqa3efn" path="res://Scripts/Player/PlayerStateWalk.gd" id="2_6t5aa"]
+[ext_resource type="Texture2D" uid="uid://c87ku2inh14do" path="res://Assets/PLAYER.png" id="2_fkybt"]
+[ext_resource type="Script" uid="uid://djjwrh6ilk22h" path="res://Scripts/Player/PlayerStateIdle.gd" id="4_vgqql"]
+[ext_resource type="Script" uid="uid://b73rgbxska720" path="res://Scripts/Player/stone_thrower.gd" id="6_x3wgy"]
+[ext_resource type="PackedScene" uid="uid://0clcp3avu7ut" path="res://Scenes/stone.tscn" id="7_3smsa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xrivr"]
 
-[node name="Player" type="CharacterBody2D" unique_id=2023136385]
+[node name="Player" type="CharacterBody2D" unique_id=1178246398 groups=["Player"]]
+collision_mask = 3
+script = ExtResource("1_6t5aa")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1198990587]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1033722141]
+texture = ExtResource("2_fkybt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1315632672]
 shape = SubResource("RectangleShape2D_xrivr")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=769038738]
-scale = Vector2(0.1484375, 0.1484375)
-texture = ExtResource("1_v0iea")
+[node name="Camera2D" type="Camera2D" parent="." unique_id=395917469]
+zoom = Vector2(3, 3)
+
+[node name="StateMachine" parent="." unique_id=1938008002 node_paths=PackedStringArray("ControlledNode", "DefaultState") instance=ExtResource("1_cvnsp")]
+ControlledNode = NodePath("..")
+DefaultState = NodePath("StateIdle")
+
+[node name="StateWalk" type="Node" parent="StateMachine" unique_id=1791213248]
+script = ExtResource("2_6t5aa")
+
+[node name="StateIdle" type="Node" parent="StateMachine" unique_id=2032980065]
+script = ExtResource("4_vgqql")
+
+[node name="StoneThrower" type="Node" parent="." unique_id=234311580]
+script = ExtResource("6_x3wgy")
+stone_scene = ExtResource("7_3smsa")
